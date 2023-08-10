@@ -25,20 +25,30 @@ public class RopeSpawnner : MonoBehaviour
         {
             GameObject temp;
 
-            temp = Instantiate(ropePartPrefab, new Vector3(transform.position.x, transform.position.y + ropePartDistance * (i + 1), transform.position.z), Quaternion.identity, parentRope.transform);
-            temp.transform.eulerAngles = new Vector3(180, 0, 0);
+            if (i == 0)
+            {
+                temp = Instantiate(ropeEndPrefab, new Vector3(transform.position.x, transform.position.y + ropePartDistance * (i + 1), transform.position.z), Quaternion.identity, parentRope.transform);
+                temp.transform.eulerAngles = new Vector3(180, 0, 0);
 
-            temp.name = parentRope.transform.childCount.ToString();
+                temp.name = parentRope.transform.childCount.ToString();
+            }
+            else 
+            {
+                temp = Instantiate(ropePartPrefab, new Vector3(transform.position.x, transform.position.y + ropePartDistance * (i + 1), transform.position.z), Quaternion.identity, parentRope.transform);
+                temp.transform.eulerAngles = new Vector3(180, 0, 0);
+
+                temp.name = parentRope.transform.childCount.ToString();
+            }
 
             Debug.Log("count = " + count + ".............");
 
             if (i == 0)
             {
                 Debug.Log("i = 0............");
-                Destroy(temp.GetComponent<CharacterJoint>());
-                // temp.GetComponent<CharacterJoint>().connectedBody = ropeEndPrefab.GetComponent<Rigidbody>();
+                Destroy(ropeEndPrefab.GetComponent<CharacterJoint>());
+              
             }
-            else if (i == count)
+            else if (i == (count - 1))
             {
                 Debug.Log("i = count.............");
                 temp.GetComponent<CharacterJoint>().connectedBody = ropeEndPrefab.GetComponent<Rigidbody>();
